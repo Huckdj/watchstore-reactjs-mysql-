@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React,{useEffect, useState} from "react";
 import '../Css/style.css'
 import 'react-slideshow-image/dist/styles.css';
 import  {Slide }  from 'react-slideshow-image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faRocket, faRightLeft, faMedal, faCreditCard, faLeftLong,faLeftRight, faRightLong } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faRocket, faRightLeft, faMedal, faCreditCard} from '@fortawesome/free-solid-svg-icons';
 import "react-multi-carousel/lib/styles.css";
 import axios from "axios";
 import Slider from "react-slick";
@@ -185,7 +186,7 @@ function Home(){
                     <div className="slider-container">
                         <div className="container-product-intro">
                             <Slider {...settings}>
-                                    {watch_detail.map(watchs => (
+                                    {Array.isArray(watch_detail) && watch_detail.map(watchs => (
                                         <div key={watchs.id} className="container-img">
                                             <Link to = {`/watch_detail/${watchs.id}`} className="intro-product-link">
                                                 <img src={watchs.images} />

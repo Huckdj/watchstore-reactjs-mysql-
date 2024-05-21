@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, {useEffect, useState} from "react";
 import '../Css/style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -5,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import { faMedal } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import $ from 'jquery';
@@ -64,7 +64,7 @@ function Topsale(){
             </div>
             <div class="container">
                 <div class="row row-cols-5">
-                        {topsale.map(topsale => (
+                        {Array.isArray(topsale) && topsale.map(topsale => (
                             <div key={topsale.id} className="container-topsale">
                                 <div class="col product-topsale">
                                     <Link to = {`/watch_detail/${topsale.id}`} className="intro-product-link">

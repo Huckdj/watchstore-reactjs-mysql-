@@ -1,55 +1,68 @@
-import React,{ useEffect, useState} from "react";
-import { useNavigate ,Routes, Route} from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import axios from "axios";
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login(){
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
-    const handleLogin = () => {
-        axios.get(`http://localhost:4000/iduser?email=${email}&password=${password}`)
-            .then(response => {
-                if (response.data.success) {
-                    // Hiển thị thông báo khi đăng nhập thành công
-                    toast.success(response.data.message);
-                    // Sau đó, thực hiện các hành động cần thiết (ví dụ: điều hướng người dùng đến trang chính)
-                } else {
-                    // Đăng nhập thất bại, hiển thị thông báo cho người dùng
-                    console.log(response.data.message);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    };
+function Login() {
+    const [values, setValues] = useState({
+        email:'',
+        password:''
+    })
+    const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
+    const handleLogin = (event) =>{
+        event.preventDefault();
+        if (values.email === '' || values.password === ''){
+            alert("Không thể bỏ trống")
+        }else{
+        axios.post('http://localhost:4000/login', values)
+        .then(res=> {
+            if(res.data.Status === "Success"){
+                alert("Đăng nhập thành công")
+                navigate('/')
+            }
+            else(
+                alert(res.data.Error)
+            )
+            console.log(res)
+        })
+        .then(err => console.log(err));
+        }
+    }
 
     return (
-        <div>
-            <Header isLoggedIn={isLoggedIn}/>
-            <div>
-                <div>
-                    <h2>Đăng nhập</h2>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Mật khẩu"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <button onClick={handleLogin}>Đăng nhập</button>
-                </div>
+        <div className="bodylogin">
+            <Header/>
+            <div className="login-form">
+                <form onSubmit={handleLogin}>
+                    <h1>Đăng Nhập</h1>
+                    <div className="content">
+                        <div className="input-field">
+                            <input 
+                                type="email" 
+                                placeholder="Email" 
+                                onChange={(e)=> setValues({...values, email: e.target.value})}
+                            />
+                        </div>
+                        <div className="input-field">
+                            <input 
+                                type="password" 
+                                placeholder="Password" 
+                                onChange={(e)=> setValues({...values, password: e.target.value})}
+                            />
+                        </div>
+                        <Link to="/contact" className="link">Bạn Quên Mật Khẩu?</Link>
+                    </div>
+                    <div className="action">
+                        <Link to='/register'><button type="button">Đăng Kí</button></Link>
+                        <button type="submit">Đăng Nhập</button>
+                    </div>
+                </form>
             </div>
             <Footer/>
         </div>
-    )
+    );
 }
-export default Login
+
+export default Login;
